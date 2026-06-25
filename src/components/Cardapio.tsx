@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChefHat, Flame, Leaf, Sparkles, UtensilsCrossed } from 'lucide-react'
+import { BookOpenText, ChefHat, Flame, Leaf, Sparkles, UtensilsCrossed, X } from 'lucide-react'
 import { CARDAPIO, type Prato } from '../constants'
 
 const CATEGORY_ICONS = [Flame, UtensilsCrossed, Sparkles]
+const HOME_DISH_LIMIT = 4
 
 function DishImage({ prato }: { prato: Prato }) {
   const [erro, setErro] = useState(false)
@@ -29,10 +30,30 @@ function DishImage({ prato }: { prato: Prato }) {
 
 export default function Cardapio() {
   const [ativo, setAtivo] = useState(0)
+  const [cardapioCompletoAberto, setCardapioCompletoAberto] = useState(false)
   const categoria = CARDAPIO[ativo]
   const pratoDestaque = categoria.pratos.find((prato) => prato.destaque) ?? categoria.pratos[0]
-  const pratos = categoria.pratos.filter((prato) => prato.nome !== pratoDestaque.nome)
+  const todosOsPratos = categoria.pratos.filter((prato) => prato.nome !== pratoDestaque.nome)
+  const pratos = todosOsPratos.slice(0, HOME_DISH_LIMIT)
+  const pratosOcultos = Math.max(todosOsPratos.length - pratos.length, 0)
   const IconeAtivo = CATEGORY_ICONS[ativo] ?? UtensilsCrossed
+  const totalDePratos = CARDAPIO.reduce((total, cat) => total + cat.pratos.length, 0)
+
+  useEffect(() => {
+    if (!cardapioCompletoAberto) return
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setCardapioCompletoAberto(false)
+    }
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [cardapioCompletoAberto])
 
   return (
     <section id="cardapio" className="py-24 sm:py-28 px-5 sm:px-6 relative overflow-hidden bg-[#100b08]">
@@ -52,9 +73,19 @@ export default function Cardapio() {
               Cardápio com alma de cozinha campeira
             </h2>
           </div>
-          <p className="text-[#bda48f] text-base sm:text-lg leading-relaxed max-w-xl lg:ml-auto">
-            Receitas gaúchas, porções generosas e ingredientes escolhidos para chegar à mesa com gosto de comida feita sem pressa.
-          </p>
+          <div className="max-w-xl lg:ml-auto">
+            <p className="text-[#bda48f] text-base sm:text-lg leading-relaxed">
+              Receitas gaúchas, porções generosas e ingredientes escolhidos para chegar à mesa com gosto de comida feita sem pressa.
+            </p>
+            <button
+              type="button"
+              onClick={() => setCardapioCompletoAberto(true)}
+              className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-[#d4a853] px-5 py-3 text-sm font-black text-[#120b06] shadow-[0_16px_35px_rgba(212,168,83,0.2)] transition-all duration-300 hover:bg-[#e9c46a]"
+            >
+              <BookOpenText className="w-4 h-4" />
+              Ver cardápio completo
+            </button>
+          </div>
         </motion.div>
 
         <div className="grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
@@ -160,6 +191,27 @@ export default function Cardapio() {
                   </motion.article>
                 ))}
               </div>
+
+              {pratosOcultos > 0 && (
+                <div className="rounded-2xl border border-dashed border-[#d4a853]/30 bg-[#0b0705]/35 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <p className="font-display text-2xl font-black text-[#f7f5f0]">
+                      Mais {pratosOcultos} opção{pratosOcultos > 1 ? 'es' : ''} em {categoria.titulo.toLowerCase()}
+                    </p>
+                    <p className="text-[#bda48f] text-sm mt-1">
+                      A home mostra uma seleção. O cardápio completo fica em uma visualização separada.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setCardapioCompletoAberto(true)}
+                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-[#d4a853]/35 px-4 py-3 text-sm font-bold text-[#e9c46a] transition-colors hover:border-[#d4a853] hover:text-[#f7f5f0]"
+                  >
+                    <BookOpenText className="w-4 h-4" />
+                    Abrir completo
+                  </button>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -168,6 +220,104 @@ export default function Cardapio() {
           * Cardápio ilustrativo. Preços e pratos podem variar conforme disponibilidade dos ingredientes.
         </p>
       </div>
+
+      <AnimatePresence>
+        {cardapioCompletoAberto && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-[#050302]/85 backdrop-blur-sm px-4 py-5 sm:p-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cardapio-completo-titulo"
+          >
+            <button
+              type="button"
+              aria-label="Fechar cardápio completo"
+              onClick={() => setCardapioCompletoAberto(false)}
+              className="absolute inset-0 cursor-default"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 18, scale: 0.98 }}
+              transition={{ duration: 0.22 }}
+              className="relative mx-auto flex h-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-[#d4a853]/25 bg-[#100b08] shadow-2xl shadow-black/60"
+            >
+              <div className="flex flex-col gap-5 border-b border-[#d4a853]/15 bg-[#17110c]/92 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+                <div>
+                  <p className="text-[#d4a853] text-xs font-bold uppercase tracking-[0.24em]">Menu completo</p>
+                  <h2 id="cardapio-completo-titulo" className="font-display text-3xl sm:text-4xl font-black text-[#f7f5f0] mt-2">
+                    Todos os pratos da casa
+                  </h2>
+                  <p className="text-[#bda48f] text-sm mt-2">
+                    {totalDePratos} opções organizadas por categoria para consultar sem alongar a home.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setCardapioCompletoAberto(false)}
+                  className="self-start sm:self-center grid h-11 w-11 place-items-center rounded-xl border border-[#d4a853]/20 text-[#e9c46a] transition-colors hover:border-[#d4a853] hover:text-[#f7f5f0]"
+                  aria-label="Fechar"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-5 sm:p-6">
+                <div className="grid gap-8">
+                  {CARDAPIO.map((cat, categoriaIndex) => {
+                    const Icone = CATEGORY_ICONS[categoriaIndex] ?? UtensilsCrossed
+
+                    return (
+                      <section key={cat.titulo} className="scroll-mt-6">
+                        <div className="mb-4 flex items-end justify-between gap-4 border-b border-[#d4a853]/12 pb-3">
+                          <div className="flex items-center gap-3">
+                            <span className="grid h-11 w-11 place-items-center rounded-xl bg-[#d4a853]/12 text-[#e9c46a]">
+                              <Icone className="w-5 h-5" />
+                            </span>
+                            <div>
+                              <h3 className="font-display text-2xl sm:text-3xl font-black text-[#f7f5f0]">{cat.titulo}</h3>
+                              <p className="text-[#8a7261] text-xs uppercase tracking-widest">{cat.pratos.length} opções</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-3">
+                          {cat.pratos.map((prato) => (
+                            <article
+                              key={prato.nome}
+                              className="rounded-xl border border-[#d4a853]/12 bg-[#0b0705]/42 p-4 transition-colors hover:border-[#d4a853]/32"
+                            >
+                              <div className="flex items-start justify-between gap-4">
+                                <div>
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    <h4 className="font-display text-xl font-black leading-tight text-[#f7f5f0]">{prato.nome}</h4>
+                                    {prato.destaque && (
+                                      <span className="rounded-full bg-[#d4a853]/12 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#e9c46a]">
+                                        {prato.destaque}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <p className="mt-2 text-sm leading-relaxed text-[#bda48f]">{prato.descricao}</p>
+                                </div>
+                                <span className="shrink-0 text-sm font-black text-[#e9c46a]">{prato.preco}</span>
+                              </div>
+                            </article>
+                          ))}
+                        </div>
+                      </section>
+                    )
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
