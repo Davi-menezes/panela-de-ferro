@@ -11,7 +11,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#0e0a07] text-[#f7f5f0]">
       <Navbar />
-      <main className="pt-16">
+      <main className="pt-[72px]">
         <Hero />
         <Sobre />
         <Cardapio />

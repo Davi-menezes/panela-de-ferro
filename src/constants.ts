@@ -19,6 +19,7 @@ export interface Prato {
   descricao: string
   preco: string
   imageUrl: string
+  destaque?: string
 }
 
 export interface Categoria {
@@ -35,6 +36,7 @@ export const CARDAPIO: Categoria[] = [
         descricao: 'Crocante por fora, cremoso por dentro. Feito com bacalhau desfiado e temperos da casa.',
         preco: 'R$ 38,90',
         imageUrl: 'https://images.unsplash.com/photo-1541832676-9b763b0239ab?w=600&q=80',
+        destaque: 'Mais pedido',
       },
       {
         nome: 'Salada da Roça',
@@ -48,6 +50,19 @@ export const CARDAPIO: Categoria[] = [
         preco: 'R$ 24,90',
         imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&q=80',
       },
+      {
+        nome: 'Tábua Colonial',
+        descricao: 'Queijo colonial, salame artesanal, copa, pepinos em conserva e pão tostado na chapa.',
+        preco: 'R$ 46,90',
+        imageUrl: 'https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=600&q=80',
+      },
+      {
+        nome: 'Mandioca Frita da Casa',
+        descricao: 'Mandioca macia por dentro, crocante por fora, finalizada com manteiga de alho e salsa.',
+        preco: 'R$ 26,90',
+        imageUrl: 'https://images.unsplash.com/photo-1625938145744-e38051539918?w=600&q=80',
+        destaque: 'Para compartilhar',
+      },
     ],
   },
   {
@@ -58,6 +73,7 @@ export const CARDAPIO: Categoria[] = [
         descricao: 'Costela bovina assada lentamente por 12h, desmanchando no garfo. Acompanha arroz, feijão e mandioca frita.',
         preco: 'R$ 89,90',
         imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',
+        destaque: 'Especialidade',
       },
       {
         nome: 'Arroz de Carreteiro',
@@ -77,6 +93,19 @@ export const CARDAPIO: Categoria[] = [
         preco: 'R$ 54,90',
         imageUrl: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=80',
       },
+      {
+        nome: 'Entrevero Serrano',
+        descricao: 'Cubos de carne, linguiça, bacon, pimentões e cebola salteados na chapa. Acompanha arroz branco.',
+        preco: 'R$ 74,90',
+        imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80',
+      },
+      {
+        nome: 'Parrilla Panela de Ferro',
+        descricao: 'Seleção de carnes grelhadas, farofa da casa, batata rústica e molho chimichurri fresco.',
+        preco: 'R$ 96,90',
+        imageUrl: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80',
+        destaque: 'Chef recomenda',
+      },
     ],
   },
   {
@@ -87,6 +116,7 @@ export const CARDAPIO: Categoria[] = [
         descricao: 'Receita original da família, com caramelo artesanal e textura aveludada que derrete na boca.',
         preco: 'R$ 22,90',
         imageUrl: 'https://images.unsplash.com/photo-1528975604071-b4dc52a2d18c?w=600&q=80',
+        destaque: 'Clássico',
       },
       {
         nome: 'Arroz Doce Cremoso',
@@ -99,6 +129,19 @@ export const CARDAPIO: Categoria[] = [
         descricao: 'Cuca artesanal assada no dia, com cobertura crocante de canela e banana nanica madura.',
         preco: 'R$ 19,90',
         imageUrl: 'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=600&q=80',
+      },
+      {
+        nome: 'Ambrosia Campeira',
+        descricao: 'Doce tradicional feito lentamente com leite, ovos, açúcar e cravo, servido em porção generosa.',
+        preco: 'R$ 21,90',
+        imageUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80',
+      },
+      {
+        nome: 'Sagu ao Vinho',
+        descricao: 'Sagu cozido no vinho tinto com creme inglês da casa e perfume de especiarias.',
+        preco: 'R$ 20,90',
+        imageUrl: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=600&q=80',
+        destaque: 'Da casa',
       },
     ],
   },

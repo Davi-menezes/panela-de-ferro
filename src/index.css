@@ -15,7 +15,7 @@
     @apply bg-[#17110c]/40 backdrop-blur-xl border border-[#d4a853]/15 rounded-2xl;
   }
   .glass-dark {
-    @apply bg-[#0a0705]/90 backdrop-blur-xl border border-[#d4a853]/10;
+    @apply bg-[#0a0705]/90 backdrop-blur-xl;
   }
   .text-gradient {
     @apply bg-gradient-to-r from-[#e9c46a] via-[#f4a261] to-[#e76f51] bg-clip-text text-transparent;
@@ -25,5 +25,12 @@
   }
   .glow-warm {
     box-shadow: 0 0 50px rgba(230, 126, 34, 0.15);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
