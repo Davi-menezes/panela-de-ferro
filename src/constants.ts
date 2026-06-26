@@ -4,8 +4,8 @@ export const RESTAURANT = {
   description:
     'Desde 2000 em Pantano Grande, o Restaurante Panela De Ferro serve a culinária gaúcha com ingredientes frescos e receitas que passam de mão em mão. Um lugar onde cada prato conta uma história.',
   address: 'R. Olinto Pereira da Rosa, 619, Pantano Grande - RS',
-  phone: '+55 51 98070-7772',
-  whatsapp: 'https://wa.me/5551980707772',
+  phone: '+55 XX XXXXX-XXXX',
+  whatsapp: 'https://wa.me/55XXXXXXXXXXX',
   instagram: 'https://instagram.com/restpaneladeferro2000?igshid=MzRlODBiNWFlZA==',
   maps: 'https://www.google.com/maps/search/?api=1&query=Restaurante%20Panela%20De%20Ferro&query_place_id=ChIJGdsWM8g_G5URWz4_3xv5fTQ',
   horarios: [
